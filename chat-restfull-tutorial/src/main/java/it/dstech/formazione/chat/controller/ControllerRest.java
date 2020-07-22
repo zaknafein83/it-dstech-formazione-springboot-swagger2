@@ -2,7 +2,10 @@ package it.dstech.formazione.chat.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,10 +22,14 @@ public class ControllerRest {
 
 	@Autowired
 	private PersonaServiceDAO personaDao;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ControllerRest.class);
 
 	@RequestMapping(value = "/usernames", method = RequestMethod.GET)
 	@ApiOperation(value = "Recupera tutti gli utenti dal sistema", notes = "Con questa chiamata riceveremo tutti gli utenti registrati al sistema")
 	public List<Persona> getAllUsernames() {
+		
+		
 		return personaDao.cercaUsernames();
 	}
 
@@ -30,7 +37,6 @@ public class ControllerRest {
 	@ApiOperation(value = "Invia Messaggio", notes = "Questo metodo permette ad un utente di inviare un messaggio di testo")
 	public void sendMessage(
 			@ApiParam(value = "Message Bean oggetto customizzato per l'invio di un messaggio", name = "messaggio") @RequestBody MessageBeans messaggio) {
-//		
 
 		personaDao.sendMessaggio(messaggio.getUsername(), messaggio.getMessaggio());
 	}
@@ -38,6 +44,7 @@ public class ControllerRest {
 	@RequestMapping(value = "/persona", method = RequestMethod.POST)
 	@ApiOperation(value = "Aggiungi persona", notes = "Aggiunge al sistema un nuovo username che individua una persona")
 	public void createPersona(@ApiParam(value = "Oggetto persona per la registrazione a sistema", name = "persona") @RequestBody Persona p) {
+		LOGGER.info(String.format("Il servizio è stato chiamato per far registrare la persona %s", p.getUsername()));
 		personaDao.createPersona(p);
 	}
 

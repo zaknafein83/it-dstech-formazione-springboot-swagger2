@@ -48,6 +48,11 @@ public class Persona {
 	public void setListaMessaggi(List<Messaggio> listaMessaggi) {
 		this.listaMessaggi = listaMessaggi;
 	}
+
+	@Override
+	public String toString() {
+		return "Persona [id=" + id + ", username=" + username + ", listaMessaggi=" + listaMessaggi + "]";
+	}
 	
 	
 }
